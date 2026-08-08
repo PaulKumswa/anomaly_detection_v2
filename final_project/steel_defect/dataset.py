@@ -176,7 +176,20 @@ class SteelDataset(Dataset):
         # ┌──────────────────────────────────────────────┐
         # │  DATA-2: Write your code below               │
         # └──────────────────────────────────────────────┘
-        raise NotImplementedError("DATA-2: Implement __getitem__")
+        # raise NotImplementedError("DATA-2: Implement __getitem__")
+
+        loaded_item = self.file_list[idx]
+        image_path, label = loaded_item
+
+        loaded_image = cv2.imread(image_path)
+        if loaded_image is None:
+            raise FileNotFoundError("No image at filepath")
+        loaded_image = cv2.cvtColor(loaded_image, cv2.COLOR_BGR2RGB)
+        if self.transform is not None:
+            result = self.transform(image=loaded_image)
+            loaded_image = result["image"]
+        return (loaded_image, label)
+
 
 
 # ── Scaffold — DataLoader helper ──────────────────────────────
