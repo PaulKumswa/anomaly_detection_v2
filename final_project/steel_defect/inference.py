@@ -148,6 +148,23 @@ class SteelPredictor:
         # │  INFER-2: Write your code below              │
         # └──────────────────────────────────────────────┘
         # raise NotImplementedError("INFER-2: Implement prediction pipeline")
+        
+        result = self.transform(image=image)
+        tensor = result["image"]
+        tensor = tensor.unsqueeze(0)
+        tensor = tensor.to(self.device)
+
+        with torch.no_grad():
+            logits = self.model(tensor)
+            probs = F.softmax(logits, dim=1)
+
+        confidence, predicted = probs.max(dim=1)
+
+        predicted_idx = predicted.item()
+        confidence_val = confidence.item()
+        label = CLASS_NAMES[predicted_idx]
+        probs_np = probs.squeeze().cpu().numpy()
+        class_scores = {name: float(p) for name, p in zip(CLASS_NAMES, probs_np)}
 
         elapsed_ms = (time.perf_counter() - start) * 1000
         self._inference_count += 1
