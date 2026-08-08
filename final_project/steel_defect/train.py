@@ -282,7 +282,20 @@ def train(
         # │        logger.info("Saved best model ...")   │
         # └──────────────────────────────────────────────┘
         # TRAIN-4: Write your code below
-        pass  # Replace this with your checkpoint saving logic
+        
+        if val_acc > best_val_acc:                 
+            best_val_acc = val_acc     
+
+            checkpoint_dict = {"model_state_dict": model.state_dict(), 
+                            "optimizer_state_dict": optimizer.state_dict(), 
+                            "epoch": epoch, 
+                            "best_val_acc": best_val_acc, 
+                            "num_classes": NUM_CLASSES
+                            }        
+            
+            torch.save(checkpoint_dict, CHECKPOINT_PATH)    
+            logger.info("Saved best model with accuracy: best_val_acc=%.3f", best_val_acc)   
+       
 
     elapsed = time.time() - start_time
     logger.info("Training complete | time=%.1fs | best_val_acc=%.3f", elapsed, best_val_acc)
