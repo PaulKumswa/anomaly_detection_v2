@@ -74,7 +74,8 @@ def build_val_transforms() -> A.Compose:
     # │  PREPROCESS-2: Write your code below         │
     # └──────────────────────────────────────────────┘
     # raise NotImplementedError("PREPROCESS-2: Implement validation transforms")
-
+    #
+    
     return A.Compose([
         A.Resize(256, 256),
         A.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD),
