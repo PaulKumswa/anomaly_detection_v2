@@ -125,7 +125,12 @@ class SteelCNN(nn.Module):
         # ┌──────────────────────────────────────────────┐
         # │  MODEL-2: Write your code below              │
         # └──────────────────────────────────────────────┘
-        raise NotImplementedError("MODEL-2: Implement forward pass")
+        # raise NotImplementedError("MODEL-2: Implement forward pass")
+
+        x = self.features(x)
+        x = self.pool(x)
+        x = self.classifier(x)
+        return x
 
     @property
     def num_parameters(self) -> int:
