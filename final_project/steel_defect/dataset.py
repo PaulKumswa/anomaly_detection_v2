@@ -66,8 +66,17 @@ def build_file_list(data_dir: Path | str | None = None) -> list[tuple[str, int]]
     # ┌──────────────────────────────────────────────┐
     # │  DATA-1: Write your code below               │
     # └──────────────────────────────────────────────┘
-    raise NotImplementedError("DATA-1: Implement dataset directory scanning")
+    # raise NotImplementedError("DATA-1: Implement dataset directory scanning")
 
+    file_list = []
+    for item in data_dir.iterdir():
+        if item.is_dir() and item.name in CLASS_NAMES:
+            folder_name = item.name
+            label_index = CLASS_NAMES.index(folder_name)
+            for image_path in item.iterdir():
+                if image_path.is_file() and image_path.suffix.lower() in IMAGE_EXTENSIONS:
+                    file_list.append((str(image_path), label_index))
+    return sorted(file_list)
 
 def create_splits(
     file_list: list[tuple[str, int]],
