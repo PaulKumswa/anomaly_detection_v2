@@ -114,6 +114,27 @@ def train_one_epoch(
     # └──────────────────────────────────────────────┘
     # raise NotImplementedError("TRAIN-2: Implement training epoch")
 
+    model.train()
+    running_loss = 0.0
+    correct = 0
+    total = 0
+
+    for images, labels in loader:
+        images = images.to(device)
+        labels = labels.to(device)
+        optimizer.zero_grad()
+        outputs = model(images)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
+        running_loss += loss.item()
+        _, predicted = outputs.max(1)
+        total += labels.size(0)
+        correct += predicted.eq(labels).sum().item()
+
+    average_loss = running_loss / len(loader)
+    accuracy = correct / total
+    return average_loss, accuracy
 
 def validate(
     model: nn.Module,
