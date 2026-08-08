@@ -14,6 +14,8 @@ from torch.utils.data import Dataset, DataLoader
 
 from steel_defect.utils import setup_logging, CLASS_NAMES, DATA_DIR, IMAGE_SIZE
 
+from sklearn.model_selection import train_test_split
+
 logger = setup_logging(__name__)
 
 # File extensions to include when scanning for images
@@ -115,8 +117,15 @@ def create_splits(
     # ┌──────────────────────────────────────────────┐
     # │  DATA-3: Write your code below               │
     # └──────────────────────────────────────────────┘
-    raise NotImplementedError("DATA-3: Implement train/val/test splitting")
+    # raise NotImplementedError("DATA-3: Implement train/val/test splitting")
 
+    labels = [label for _, label in file_list]
+    test_ratio = 1.0 - train_ratio - val_ratio
+    train_val_group, test_group = train_test_split(file_list, test_size=test_ratio, stratify=labels, random_state=seed)
+    val_ratio_relative = val_ratio / (train_ratio + val_ratio)
+    labels2 = [label for _, label in train_val_group]
+    train_group, val_group = train_test_split(train_val_group, test_size=val_ratio_relative, stratify=labels2, random_state=seed)
+    return train_group, val_group, test_group
 
 class SteelDataset(Dataset):
     """
