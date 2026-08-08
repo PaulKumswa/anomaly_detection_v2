@@ -90,7 +90,17 @@ class SteelPredictor:
         # ┌──────────────────────────────────────────────┐
         # │  INFER-1: Write your code below              │
         # └──────────────────────────────────────────────┘
-        raise NotImplementedError("INFER-1: Load model from checkpoint")
+        # raise NotImplementedError("INFER-1: Load model from checkpoint")
+
+        if not self.checkpoint_path.exists():
+            raise FileNotFoundError("No checkpoint found")
+        
+        checkpoint = torch.load(self.checkpoint_path, map_location=self.device)
+        model = SteelCNN(num_classes=NUM_CLASSES)
+        model.load_state_dict(checkpoint["model_state_dict"])
+        model.to(self.device)
+        model.eval()
+        self.model = model        
 
         elapsed_ms = (time.perf_counter() - start) * 1000
         logger.info("Model loaded | time=%.0fms", elapsed_ms)
@@ -137,7 +147,7 @@ class SteelPredictor:
         # ┌──────────────────────────────────────────────┐
         # │  INFER-2: Write your code below              │
         # └──────────────────────────────────────────────┘
-        raise NotImplementedError("INFER-2: Implement prediction pipeline")
+        # raise NotImplementedError("INFER-2: Implement prediction pipeline")
 
         elapsed_ms = (time.perf_counter() - start) * 1000
         self._inference_count += 1
