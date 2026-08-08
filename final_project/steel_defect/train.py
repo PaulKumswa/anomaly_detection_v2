@@ -168,8 +168,27 @@ def validate(
     # ┌──────────────────────────────────────────────┐
     # │  TRAIN-3: Write your code below              │
     # └──────────────────────────────────────────────┘
-    raise NotImplementedError("TRAIN-3: Implement validation epoch")
+    # raise NotImplementedError("TRAIN-3: Implement validation epoch")
 
+    model.eval()
+    running_loss = 0.0
+    correct = 0
+    total = 0
+
+    with torch.no_grad():
+        for images, labels in loader:
+            images = images.to(device)
+            labels = labels.to(device)
+            outputs = model(images)
+            loss = criterion(outputs, labels)
+            running_loss += loss.item()
+            _, predicted = outputs.max(1)
+            total += labels.size(0)
+            correct += predicted.eq(labels).sum().item()
+
+    average_loss = running_loss / len(loader)
+    accuracy = correct / total
+    return average_loss, accuracy
 
 # ── Scaffold — main training loop ─────────────────────────────
 
