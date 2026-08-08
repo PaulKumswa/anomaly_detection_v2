@@ -56,7 +56,11 @@ def setup_training(
     # ┌──────────────────────────────────────────────┐
     # │  TRAIN-1: Write your code below              │
     # └──────────────────────────────────────────────┘
-    raise NotImplementedError("TRAIN-1: Set up loss function and optimizer")
+    # raise NotImplementedError("TRAIN-1: Set up loss function and optimizer")
+
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+    return criterion, optimizer
 
 
 def train_one_epoch(
@@ -108,7 +112,7 @@ def train_one_epoch(
     # ┌──────────────────────────────────────────────┐
     # │  TRAIN-2: Write your code below              │
     # └──────────────────────────────────────────────┘
-    raise NotImplementedError("TRAIN-2: Implement training epoch")
+    # raise NotImplementedError("TRAIN-2: Implement training epoch")
 
 
 def validate(
