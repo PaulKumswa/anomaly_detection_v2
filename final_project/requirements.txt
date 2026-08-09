@@ -18,5 +18,9 @@ pandas>=2.0
 # Visualization
 matplotlib>=3.7
 
+# Documentation
+mkdocs>=1.5
+mkdocs-material>=9.0
+
 # Dev & Testing
 pytest>=7.4
